@@ -192,7 +192,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView
                 // 1. Deny case:
                 // shouldShowRequestPermissionRationale tells us if the user clicked deny and
                 // hence we should show an explanation for the permission request.
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
+                if (permissions.length > 0 &&
+                        ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
                     // Permissions were denied, so asking again (Ideally we should show an
                     // explanation).
                     checkPermissions();
