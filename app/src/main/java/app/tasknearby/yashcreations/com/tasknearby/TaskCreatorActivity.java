@@ -16,6 +16,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.ActionBar;
@@ -543,6 +546,16 @@ public class TaskCreatorActivity extends AppCompatActivity implements View.OnCli
         if (!isInternetConnected())
             return;
         PlacePicker.IntentBuilder placePickerIntent = new PlacePicker.IntentBuilder();
+        if (null != mSelectedLocation) {
+            // To center the place picker on an already present location, we need to specify
+            // LatLngBounds which are specified by two LatLng coordinates. Hardcoding the area to
+            // be a square of 0.002 latitude units X 0.002 longitude units.
+            LatLng topLeft = new LatLng(mSelectedLocation.getLatitude() - 0.001,
+                    mSelectedLocation.getLongitude() - 0.001);
+            LatLng bottomRight = new LatLng(mSelectedLocation.getLatitude() + 0.001,
+                    mSelectedLocation.getLongitude() + 0.001);
+            placePickerIntent.setLatLngBounds(new LatLngBounds(topLeft, bottomRight));
+        }
         try {
             startActivityForResult(placePickerIntent.build(this), REQUEST_CODE_PLACE_PICKER);
         } catch (GooglePlayServicesRepairableException e) {
